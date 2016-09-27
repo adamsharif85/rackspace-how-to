@@ -132,7 +132,7 @@ There is currently a known issue when a Windows cloud server is put into rescue 
 
   If all the objects point to drive **C**, only an adjustment to the drive ID of drive **D** is needed.
 
-6. Open th Disk Management window (see "Troubleshoot the server in rescue mode" for instructions).
+6. Open the Disk Management window, DiskMgmt.msc (see "Troubleshoot the server in rescue mode" for instructions).
 
 7. From the command line, run `DISKPART`.
 
@@ -162,21 +162,29 @@ There is currently a known issue when a Windows cloud server is put into rescue 
 
 #### Change the drive ID
 
-1. To change the ID, run the following command:
+1. Before changing the ID, make sure the disk is not in a read-only state, via the command below:
+
+        ATTRIBUTES DISK
+        
+If the drive is showing as 'read-only', use the following command to rectify this:
+
+        ATTRIBUTES DISK CLEAR READONLY
+
+2. To change the ID, run the following command:
 
         UNIQUEID DISK id=<any hex value of 8 characters>
 
-2. Run the following command to verify that the value changed:
+3. Run the following command to verify that the value changed:
 
         UNIQUEID DISK
 
-3. Change drive D by running the following commands:
+4. Change drive D by running the following commands:
 
         SELECT DISK ( the disk number that our found in DISKPART and disk manager
 
         UNIQUEID DISK id=(disk ID from C drive that was recorded, in the example this was 42D9DECD)
 
-4. Run the `UNIQUEID DISK` command to verify that the ID matches what you recorded.
+5. Run the `UNIQUEID DISK` command to verify that the ID matches what you recorded.
 
    After this process is complete, you can take the server out of rescue mode. The server should now boot up normally.
 
